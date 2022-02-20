@@ -21,7 +21,7 @@ export default function Home() {
       />
 
       <Card imgUrl="/static/sample.png" size="large" />
-      <Card imgUrl="/static/fff" size="medium" />
+      <Card imgUrl="/static/sample.png" size="medium" />
       <Card imgUrl="/static/sample.png" size="small" />
     </div>
   );
