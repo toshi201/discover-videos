@@ -13,7 +13,7 @@ export async function getServerSideProps() {
   const disneyVideos = await getVideos("disney trailer");
   const productivityVideos = await getVideos("productivity");
   const travelVideos = await getVideos("travel");
-  const popularVideos = await getPopularVideos("");
+  const popularVideos = await getPopularVideos();
   return {
     props: { disneyVideos, productivityVideos, travelVideos, popularVideos },
   };
@@ -34,6 +34,7 @@ export default function Home({
       <div className={styles.main}>
         <NavBar />
         <Banner
+          videoId={"M7lc1UVf-VE"}
           title="Clifford the red dog"
           subTitle="a very cute dog"
           imgUrl="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png"
