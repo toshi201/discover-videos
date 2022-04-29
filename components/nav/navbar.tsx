@@ -15,9 +15,12 @@ const NavBar = () => {
         if (!magic) {
           return;
         }
-        const data = await magic.user.getMetadata();
-        const { email } = data;
-        setUsername(email || "");
+        const { email, issuer } = await magic.user.getMetadata();
+        const didToken = await magic.user.getIdToken();
+        console.log({ didToken });
+        if (email) {
+          setUsername(email);
+        }
       };
       fetch_username();
     } catch (error) {

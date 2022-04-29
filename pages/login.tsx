@@ -15,52 +15,70 @@ const Login = () => {
     const handleComplete = () => {
       setIsLoading(false);
     };
-    router.events.on('routeChangeComplete', handleComplete);
-    router.events.on('routeChangeError', handleComplete);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
 
     return () => {
-      router.events.off('routeChangeComplete', handleComplete);
-      router.events.off('routeChangeError', handleComplete);
-    }
+      router.events.off("routeChangeComplete", handleComplete);
+      router.events.off("routeChangeError", handleComplete);
+    };
   }, [router]);
 
   const handleOnChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserMsg("");
-    console.log("event", e);
+    //console.log("event", e);
     const email = e.target.value;
     setEmail(email);
   };
 
-  const handleLoginWithEmail = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleLoginWithEmail = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
     e.preventDefault();
 
     if (email) {
-      if (email === "aquaconner8@gmail.com") {
-        // router.push("/");
-        try {
-          setIsLoading(true);
-          if (magic) {
-            const didToken = await magic.auth.loginWithMagicLink({
-              email
+      //      if (email === "aquaconner8@gmail.com") {
+      // router.push("/");
+      try {
+        setIsLoading(true);
+        if (magic) {
+          const didToken = await magic.auth.loginWithMagicLink({
+            email,
+          });
+          console.log({ didToken });
+          if (didToken) {
+            const response = await fetch("/api/login", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${didToken}`,
+                "Content-Type": "application/json",
+              },
             });
-            console.log({didToken});
-            if (didToken) {
+
+            const loggedInResponse = await response.json();
+            if (loggedInResponse.done) {
+              console.log({ loggedInResponse });
               router.push("/");
+            } else {
+              setIsLoading(false);
+              setUserMsg("Something went wrong");
             }
+            //router.push("/");
           }
-        } catch(error) {
-          console.error('Something went wrong logging', error);
-          setIsLoading(false);
         }
-      } else {
+      } catch (error) {
+        console.error("Something went wrong logging", error);
         setIsLoading(false);
-        setUserMsg("Something went wrong logging in");
       }
     } else {
-      // show user
       setIsLoading(false);
-      setUserMsg("Enter a valid email address");
+      setUserMsg("Something went wrong logging in");
     }
+    // } else {
+    //   // show user
+    //   setIsLoading(false);
+    //   setUserMsg("Enter a valid email address");
+    // }
   };
   return (
     <div className={styles.container}>
@@ -88,7 +106,7 @@ const Login = () => {
 
           <p className={styles.userMsg}>{userMsg}</p>
           <button onClick={handleLoginWithEmail} className={styles.loginBtn}>
-            {isLoading ? 'Loading': 'Sign in'}
+            {isLoading ? "Loading" : "Sign in"}
           </button>
         </div>
       </main>
