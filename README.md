@@ -2,3 +2,4 @@ This is a website clone of https://www.udemy.com/course/complete-nextjs-develope
 
 I translated javascript to typescript
 
+nextjs typescript + hasura + magic login
